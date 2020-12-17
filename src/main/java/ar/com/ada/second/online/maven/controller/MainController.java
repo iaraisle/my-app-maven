@@ -7,6 +7,7 @@ public class MainController {
     private static MainController mainController;
     private MainView mainView = MainView.getInstance();
 
+
     private MainController() {
     }
 

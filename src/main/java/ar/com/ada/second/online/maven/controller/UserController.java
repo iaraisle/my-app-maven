@@ -46,11 +46,11 @@ public class UserController {
         // pongo el cursor al principio, pongo Ctrl + Alt + V y elijo la variable
         // de qué parte del método quiero poner
 
-        //String nickname = dataNewUser.get("nickname"); //para extraer la info del hashmap
-        //String email = dataNewUser.get("email");
-        //UserDTO userDTO = new UserDTO(nickname, email);
+        String nickname = dataNewUser.get("nickname"); //para extraer la info del hashmap
+        String email = dataNewUser.get("email");
+        UserDTO userDTO = new UserDTO(nickname, email);
 
-        //2da versión
+        /* 2da versión
         String nickname = dataNewUser.get("nickname");
         String email = dataNewUser.get("email");
 
@@ -58,8 +58,8 @@ public class UserController {
         userDTO.setNickname(nickname);
         userDTO.setEmail(email);
 
-        //3ra versión
-
+        3ra versión
+        */
 
     }
 

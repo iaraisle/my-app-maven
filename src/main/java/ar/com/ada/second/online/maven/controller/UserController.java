@@ -1,5 +1,7 @@
 package ar.com.ada.second.online.maven.controller;
 
+import ar.com.ada.second.online.maven.model.dao.JpaUserDAO;
+import ar.com.ada.second.online.maven.model.dao.UserDAO;
 import ar.com.ada.second.online.maven.model.dto.UserDTO;
 import ar.com.ada.second.online.maven.view.MainView;
 import ar.com.ada.second.online.maven.view.UserView;
@@ -7,9 +9,11 @@ import ar.com.ada.second.online.maven.view.UserView;
 import java.util.HashMap;
 
 public class UserController {
+
     private static UserController userController;
     private UserView userView = UserView.getInstance();
     private MainView mainView = MainView.getInstance();
+    private JpaUserDAO jpaUserDAO = JpaUserDAO.getInstance();
 
 
     private UserController() {
@@ -50,16 +54,29 @@ public class UserController {
         String email = dataNewUser.get("email");
         UserDTO userDTO = new UserDTO(nickname, email);
 
-        /* 2da versión
+        /*2da versión
         String nickname = dataNewUser.get("nickname");
         String email = dataNewUser.get("email");
 
         UserDTO userDTO = new UserDTO();
-        userDTO.setNickname(nickname);
+        userDTO.setNickName(nickname);
         userDTO.setEmail(email);
 
         3ra versión
+        UserDTO userDTO = new UserDTO();
+        userDTO.setNickName(dataNewUser.get("nickname"));
+        userDTO.setEmail(dataNewUser.get("email"));
         */
+
+        //Validación de registro en la base de datos
+
+
+        System.out.println(userDTO.toString());
+
+
+        UserDAO userDAO = UserDAO.toDAO(userDTO);
+        jpaUserDAO.save(userDAO);
+
 
     }
 

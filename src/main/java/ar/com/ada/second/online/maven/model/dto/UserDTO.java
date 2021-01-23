@@ -10,10 +10,10 @@ import lombok.*;
 public class UserDTO {
     private Integer id;
     private String nickName;
-    private  String name;
+    private  String email;
 
-    public UserDTO(String nickName, String name) {
+    public UserDTO(String nickName, String email) {
         this.nickName = nickName;
-        this.name = name;
+        this.email = email;
     }
 }

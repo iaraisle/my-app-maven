@@ -69,15 +69,22 @@ public class UserController {
         */
 
         //Validación de registro en la base de datos
-
-
-        System.out.println(userDTO.toString());
+        try {
+            jpaUserDAO.findByEmailOrNickname(userDTO.getEmail(), userDTO.getNickName());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            userView.existingUser();
+            return;
+        }
 
 
         UserDAO userDAO = UserDAO.toDAO(userDTO);
+
         jpaUserDAO.save(userDAO);
 
+        userDTO.setId(userDAO.getId());
 
+        userView.showNewUser(userDTO);
     }
 
     // init: showTitleUserModule => while =>

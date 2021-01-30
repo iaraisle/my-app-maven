@@ -18,11 +18,11 @@ public class JpaUserDAO extends JPA implements DAO <UserDAO>{
         return jpaUserDAO;
     }
 
-    public void findByEmailAndNickname(String email, String nickname) throws Exception {
+    public void findByEmailOrNickname(String email, String nickname) throws Exception {
         openConnection();
-        //SELECT * FROM user WHERE email=? AND nickname=?
+        //SELECT * FROM user WHERE email=? OR nickname=?
         TypedQuery<UserDAO> query = entityManager.createQuery(
-                "SELECT u FROM UserDAO WHERE u.email=:email AND nickname=:nickname",
+                "SELECT u FROM UserDAO u WHERE u.email=:email OR u.nickname=:nickname",
                 UserDAO.class);
 
         query.setParameter("email", email);

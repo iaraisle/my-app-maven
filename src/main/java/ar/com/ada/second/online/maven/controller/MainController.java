@@ -25,7 +25,7 @@ public class MainController {
             switch (option) {
                 case 1:
                     // llamaria al controllador de usuario
-                    System.out.println("llamar al controlador del usuarios\n");
+                    System.out.println("Llamar al controlador del usuarios\n");
                     break;
                 case 5:
                     shouldItStay = false;

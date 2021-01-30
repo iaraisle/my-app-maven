@@ -1,6 +1,7 @@
 package ar.com.ada.second.online.maven.view;
 
 import ar.com.ada.second.online.maven.controller.UserController;
+import ar.com.ada.second.online.maven.model.dto.UserDTO;
 import ar.com.ada.second.online.maven.utils.Keyboard;
 
 import java.security.Key;
@@ -39,12 +40,12 @@ public class UserView {
         return Keyboard.getInputInteger();
     }
 
-    public HashMap <String, String> getDataNewUser() {
+    public HashMap<String, String> getDataNewUser() {
         System.out.println("#####################################");
         System.out.println("#   Ada Social Network: Nuevo usuario   #");
         System.out.println("#####################################\n");
 
-        HashMap <String, String> data = new HashMap<>();
+        HashMap<String, String> data = new HashMap<>();
 
         System.out.println("Ingrese un nombre de usuario: ");
         String nickname = Keyboard.getInputString();
@@ -59,5 +60,20 @@ public class UserView {
         //data.put("email", Keyboard.getInputString());
 
         return null;
+    }
+
+    public void existingUser() {
+        System.out.println("Oops!! El usuario ya existe en la base de datos.");
+        Keyboard.pressEnterKeyToContinue();
+    }
+
+    public void showNewUser(UserDTO dto) {
+
+        System.out.println("\nUsuario creado con éxito:\n");
+        System.out.printf("id: %d\n", dto.getId());
+        System.out.printf("email: %s\n", dto.getEmail());
+        System.out.printf("Nickname: %s\n", dto.getNickName());
+
+        Keyboard.pressEnterKeyToContinue();
     }
 }

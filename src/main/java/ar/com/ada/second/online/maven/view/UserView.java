@@ -1,11 +1,14 @@
 package ar.com.ada.second.online.maven.view;
 
 import ar.com.ada.second.online.maven.controller.UserController;
+import ar.com.ada.second.online.maven.model.dao.UserDAO;
 import ar.com.ada.second.online.maven.model.dto.UserDTO;
+import ar.com.ada.second.online.maven.utils.CommandLineTable;
 import ar.com.ada.second.online.maven.utils.Keyboard;
 
 import java.security.Key;
 import java.util.HashMap;
+import java.util.List;
 
 public class UserView {
 
@@ -36,6 +39,7 @@ public class UserView {
     public Integer userMenuSelectOption() {
         System.out.println("Qué desea realizar: ");
         System.out.println("| 1 | Crear usuario");
+        System.out.println("| 2 | Lista de usuarios");
         System.out.println("| 5 | Regresar al menú principal");
         return Keyboard.getInputInteger();
     }
@@ -74,6 +78,43 @@ public class UserView {
         System.out.printf("email: %s\n", dto.getEmail());
         System.out.printf("Nickname: %s\n", dto.getNickName());
 
+        Keyboard.pressEnterKeyToContinue();
+    }
+
+    public String printUserPerPage(List<UserDAO> users, List<String> paginator, String optionSelectEditOrDelete, boolean isHeaderShown) {
+        if (isHeaderShown) {
+            System.out.println("#########################################");
+            System.out.println("#  Ada Social Network: Lista de Usuarios  #");
+            System.out.println("#########################################\n");
+
+        }
+
+        CommandLineTable st = new CommandLineTable();
+        st.setShowVerticalLines(true);//if false (default) then no vertical lines are shown
+
+        st.setHeaders("ID", "Nickname", "Email");
+        users.forEach(userDAO -> {
+            st.addRow(
+                    userDAO.getId().toString(), //commandLineTable siempre va a mostrar string
+                    userDAO.getNickName(),
+                    userDAO.getEmail()
+            );
+        });
+
+        st.print();
+
+        if (optionSelectEditOrDelete != null && !optionSelectEditOrDelete.isEmpty())
+            paginator.set(paginator.size() - 2, optionSelectEditOrDelete);
+
+        System.out.println("\n+----------------------------------------+");
+        paginator.forEach(page -> System.out.print(page + " "));
+        System.out.println("\n+----------------------------------------+");
+
+        return Keyboard.getInputString();
+    }
+
+    public void usersListNotFound() {
+        System.out.println("No hay usuarios registrados en la base de datos");
         Keyboard.pressEnterKeyToContinue();
     }
 }

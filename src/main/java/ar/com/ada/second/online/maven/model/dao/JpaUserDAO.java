@@ -2,6 +2,7 @@ package ar.com.ada.second.online.maven.model.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -45,5 +46,30 @@ public class JpaUserDAO extends JPA implements DAO <UserDAO>{
         /*Consumer<EntityManager> persistUser = entityManager1 -> entityManager.persist(userDAO);
 
         executeInsideTransaction(persistUser);*/
+    }
+
+    @Override
+    public Integer getTotalRecords() {
+        openConnection();
+
+        Object singleResult = entityManager.createNativeQuery("SELECT COUNT (*) FROM User").getSingleResult();//"native" permite usar la query de MySql
+        Integer count = singleResult != null ? Integer.parseInt(singleResult.toString()) : 0;
+
+        closeConnection();
+        return count;
+
+    }
+
+    public List<UserDAO> findAll(Integer from, Integer limit) {
+        openConnection();
+
+        TypedQuery<UserDAO> query = entityManager.createQuery("SELECT COUNT u FROM UserDAO u", UserDAO.class);
+        query.setFirstResult(from);
+        query.setMaxResults(limit);
+        List<UserDAO> list = query.getResultList();
+
+        closeConnection();
+
+        return list;
     }
 }

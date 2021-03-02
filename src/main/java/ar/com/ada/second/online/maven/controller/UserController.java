@@ -11,13 +11,16 @@ import ar.com.ada.second.online.maven.view.UserView;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class UserController {
 
     private static UserController userController;
+    private MainController mainController = MainController.getInstance();
     private UserView userView = UserView.getInstance();
     private MainView mainView = MainView.getInstance();
     private JpaUserDAO jpaUserDAO = JpaUserDAO.getInstance();
+
 
 
     private UserController() {
@@ -41,6 +44,9 @@ public class UserController {
                 case 2:
                     showAllUsers();
                     break;
+                case 3:
+                    editUser();
+                    break;
                 case 5:
                     shouldItStay = false;
                     mainView.showTitleReturnMenu();
@@ -51,71 +57,6 @@ public class UserController {
         }
     }
 
-    private void showAllUsers() {
-
-        printRecordsPerPage(null, true);
-    }
-
-    private Integer printRecordsPerPage(String optionSelectEditOrDelete, boolean isHeaderShown) {
-        int limit = 4,
-            currentPage = 0,
-            totalUsers,
-            totalPages,
-            userIdSelected = 0;
-
-        List<UserDAO> users; // el contenido que quiero que tenga el paginado viene de esta lista
-        List<String> paginator; //cómo mostrar los resultados al usuario
-
-        boolean shouldGetOut = false;
-
-        while (!shouldGetOut){
-            totalUsers = jpaUserDAO.getTotalRecords();
-            totalPages = (int) Math.ceil((double)totalUsers / limit); //ceil redondea para arriba y así me aseguro de siempre tener un entero así que puedo castear (int)
-            paginator = Paginator.buildPaginator(currentPage, totalPages);
-            users = jpaUserDAO.findAll(currentPage*limit, limit);
-
-            if (!users.isEmpty()) {
-                String choice = userView.printUserPerPage(
-                        users, paginator, optionSelectEditOrDelete, isHeaderShown
-                );
-
-                switch (choice) {
-                    case "i":
-                    case "I":
-                        currentPage = 0;
-                        break;
-                    case "a":
-                    case "A":
-                        if (currentPage > 0) currentPage--;
-                        break;
-                    case "s":
-                    case "S":
-                        if (currentPage + 1 < totalPages) currentPage++;
-                        break;
-                    case "u":
-                    case "U":
-                        currentPage = totalPages - 1;
-                        break;
-                    case "q":
-                    case "Q":
-                        shouldGetOut = true;
-                        break;
-                    default:
-                        if (choice.matches("^-?\\d+$")){
-                            int page = Integer.parseInt(choice);
-                            if (page > 0 && page <= totalPages) currentPage = page - 1;
-                        } else Keyboard.invalidData();
-
-
-                }
-            } else {
-                shouldGetOut = true;
-                userView.usersListNotFound();
-            }
-        }
-
-        return userIdSelected;
-    }
 
     private void createNewUser() {
         HashMap<String, String> dataNewUser = userView.getDataNewUser();
@@ -166,5 +107,126 @@ public class UserController {
     //      5 showTitleReturnMenu
 
     // createNewUser: getDataNewUser => new UserDTO
+
+
+    private void showAllUsers() {
+
+        printRecordsPerPage(null, true);
+    }
+
+
+    private void editUser() {
+       UserDAO userToEdit = getUsertoEditOrDelete(Paginator.EDIT);
+       if (userToEdit != null) {
+           HashMap<String, String> dataEditUser = userView.getDataEditUser(userToEdit);
+
+           if (!dataEditUser.get("nickname").isEmpty())
+               userToEdit.setNickName(dataEditUser.get("nickname"));
+
+           if (!dataEditUser.get("email").isEmpty())
+               userToEdit.setEmail(dataEditUser.get("email"));
+
+           jpaUserDAO.save(userToEdit);
+
+           UserDTO userDTO = UserDAO.toDTO(userToEdit);
+
+           userView.showUser(userDTO);
+       }
+
+    }
+
+    private UserDAO getUsertoEditOrDelete(String optionEditOrDelete) {
+        boolean shouldGetOut = false;
+        Optional<UserDAO> userToEditOptional = Optional.empty();
+        String actionInfo = Paginator.EDIT.equals(optionEditOrDelete) ? "Editar" : "Eliminar";
+        userView.selectUserIdToEditorDeleteInfo(actionInfo);
+
+        Integer userIdToEdit = printRecordsPerPage(optionEditOrDelete, false);
+
+        if (userIdToEdit !=0){
+            while (!shouldGetOut) {
+                userToEditOptional = jpaUserDAO.findById(userIdToEdit);
+
+                if (!userToEditOptional.isPresent()) {
+                    userView.userNotExist(userIdToEdit);
+                    userIdToEdit = userView.userIdSelection(optionEditOrDelete);
+                    shouldGetOut = (userIdToEdit == 0);
+
+                } else shouldGetOut = true;
+            }
+        }
+
+        return userToEditOptional.isPresent() ? userToEditOptional.get() : null;
+
+    }
+
+
+    private Integer printRecordsPerPage(String optionSelectEditOrDelete, boolean isHeaderShown) {
+        int limit = 4,
+                currentPage = 0,
+                totalUsers,
+                totalPages,
+                userIdSelected = 0;
+
+        List<UserDAO> users; // el contenido que quiero que tenga el paginado viene de esta lista
+        List<String> paginator; //cómo mostrar los resultados al usuario
+
+        boolean shouldGetOut = false;
+
+        while (!shouldGetOut){
+            totalUsers = jpaUserDAO.getTotalRecords();
+            totalPages = (int) Math.ceil((double)totalUsers / limit); //ceil redondea para arriba y así me aseguro de siempre tener un entero así que puedo castear (int)
+            paginator = Paginator.buildPaginator(currentPage, totalPages);
+            users = jpaUserDAO.findAll(currentPage*limit, limit);
+
+            if (!users.isEmpty()) {
+                String choice = userView.printUserPerPage(
+                        users, paginator, optionSelectEditOrDelete, isHeaderShown
+                );
+
+                switch (choice) {
+                    case "i":
+                    case "I":
+                        currentPage = 0;
+                        break;
+                    case "a":
+                    case "A":
+                        if (currentPage > 0) currentPage--;
+                        break;
+                    case "s":
+                    case "S":
+                        if (currentPage + 1 < totalPages) currentPage++;
+                        break;
+                    case "u":
+                    case "U":
+                        currentPage = totalPages - 1;
+                        break;
+                    case "e":
+                    case "E":
+                        if (optionSelectEditOrDelete != null) {
+                            userIdSelected = userView.userIdSelection(optionSelectEditOrDelete);
+                            shouldGetOut = true;
+                        }
+                        break;
+                    case "q":
+                    case "Q":
+                        shouldGetOut = true;
+                        break;
+                    default:
+                        if (choice.matches("^-?\\d+$")){
+                            int page = Integer.parseInt(choice);
+                            if (page > 0 && page <= totalPages) currentPage = page - 1;
+                        } else Keyboard.invalidData();
+
+
+                }
+            } else {
+                shouldGetOut = true;
+                userView.usersListNotFound();
+            }
+        }
+
+        return userIdSelected;
+    }
 
 }

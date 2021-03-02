@@ -41,11 +41,17 @@ public class JpaUserDAO extends JPA implements DAO <UserDAO>{
 
     @Override
     public void save(UserDAO userDAO) {
-        executeInsideTransaction(entityManager1 -> entityManager.persist(userDAO));
 
-        /*Consumer<EntityManager> persistUser = entityManager1 -> entityManager.persist(userDAO);
+        if (userDAO.getId() == null)
+            executeInsideTransaction(entityManager1 -> entityManager.persist(userDAO));
+            /*Consumer<EntityManager> persistUser = entityManager1 -> entityManager.persist(userDAO);
+            executeInsideTransaction(persistUser);*/
+        else
+            executeInsideTransaction(entityManager1 -> entityManager.merge(userDAO));
+            //merge actualiza, persist inserta
 
-        executeInsideTransaction(persistUser);*/
+
+
     }
 
     @Override
@@ -58,6 +64,17 @@ public class JpaUserDAO extends JPA implements DAO <UserDAO>{
         closeConnection();
         return count;
 
+    }
+
+    @Override
+    public Optional<UserDAO> findById(Integer id) {
+        openConnection();
+
+        UserDAO userDAO = entityManager.find(UserDAO.class, id);
+
+        closeConnection();
+
+        return Optional.ofNullable(userDAO);
     }
 
     public List<UserDAO> findAll(Integer from, Integer limit) {

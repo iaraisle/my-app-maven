@@ -50,4 +50,11 @@ public class UserDAO {
             userDAO.setId(dto.getId());
         return userDAO;
     }
+
+    public static UserDTO toDTO(UserDAO dao) {
+        UserDTO dto = new UserDTO(dao.getNickName(), dao.getEmail());
+        if (dao.getId() != null)
+            dto.setId(dao.getId());
+        return dto;
+    }
 }

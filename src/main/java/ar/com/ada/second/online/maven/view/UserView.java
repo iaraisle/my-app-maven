@@ -14,8 +14,6 @@ import java.util.List;
 public class UserView {
 
     private static UserView userView;
-    private UserController userController = UserController.getInstance();
-
 
     private UserView() {
     }

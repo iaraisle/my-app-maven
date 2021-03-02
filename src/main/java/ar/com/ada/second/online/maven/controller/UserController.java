@@ -16,7 +16,6 @@ import java.util.Optional;
 public class UserController {
 
     private static UserController userController;
-    private MainController mainController = MainController.getInstance();
     private UserView userView = UserView.getInstance();
     private MainView mainView = MainView.getInstance();
     private JpaUserDAO jpaUserDAO = JpaUserDAO.getInstance();

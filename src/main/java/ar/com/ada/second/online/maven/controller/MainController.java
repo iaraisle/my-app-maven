@@ -6,6 +6,8 @@ public class MainController {
 
     private static MainController mainController;
     private MainView mainView = MainView.getInstance();
+    private UserController userController = UserController.getInstance();
+
 
     private MainController() {
     }
@@ -24,7 +26,7 @@ public class MainController {
             switch (option) {
                 case 1:
                     // llamaria al controllador de usuario
-                    System.out.println("llamar al controlador del usuarios\n");
+                    userController.init();
                     break;
                 case 5:
                     shouldItStay = false;

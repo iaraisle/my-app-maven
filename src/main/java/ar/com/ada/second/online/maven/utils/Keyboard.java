@@ -33,6 +33,30 @@ public class Keyboard {
         System.out.println("ERROR :: tipo de dato invalido, intente de nuevo");
     }
 
+    public static String getInputAlphanumeric() {
+        Scanner keyboard = getInstance();
+        boolean aux = true;
+        String txt = null;
+
+        while (aux) {
+            try {
+                System.out.println("? ");
+                txt = keyboard.nextLine().trim();
+                while (!txt.isEmpty() && !txt.matches("^[0-9A-Za-záéíóúÁÉÍÓÚñÑ\\.\\s]+$")) {
+                    invalidData();
+                    txt = keyboard.nextLine().trim();
+                }
+                aux = false;
+            } catch (InputMismatchException e) {
+                invalidData();
+                keyboard.next();
+            }
+        }
+
+        return txt;
+    }
+
+
     // getInputString
     public static String getInputString() {
         Scanner keyboard = getInstance();
@@ -103,5 +127,25 @@ public class Keyboard {
 
         // "123.123" => 123.123
         return Double.parseDouble(txt);
+    }
+    public static String getInputEmail() {
+        Scanner keyboard = getInstance();
+        boolean aux = true;
+        String txt = null;
+        while (aux) {
+            try {
+                System.out.print("? ");
+                txt = keyboard.nextLine().trim();
+                while (!txt.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$") && !txt.isEmpty()) {
+                    invalidData();
+                    txt = keyboard.nextLine();
+                }
+                aux = false;
+            } catch (InputMismatchException e) {
+                invalidData();
+                keyboard.next();
+            }
+        }
+        return txt;
     }
 }

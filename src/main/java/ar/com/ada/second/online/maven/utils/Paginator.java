@@ -12,6 +12,7 @@ public class Paginator {
     private static final String OPTION_EXIT = "[ Q para salir ]";
 
     public static final String EDIT = "[ Editar ]";
+    public static final String DELETE = "[ Eliminar ]";
 
     public static List<String> buildPaginator(int currentPage, int totalPages) {
         List<String> pages = new ArrayList<>();

@@ -46,6 +46,9 @@ public class UserController {
                 case 3:
                     editUser();
                     break;
+                case 4:
+                    deteleUser();
+                    break;
                 case 5:
                     shouldItStay = false;
                     mainView.showTitleReturnMenu();
@@ -55,6 +58,7 @@ public class UserController {
             }
         }
     }
+
 
 
     private void createNewUser() {
@@ -132,6 +136,25 @@ public class UserController {
            userView.showUser(userDTO);
        }
 
+    }
+
+    private void deteleUser() {
+        UserDAO userToDelete = getUsertoEditOrDelete(Paginator.DELETE);
+        if (userToDelete != null) {
+           Boolean answer = userView.areYouSureToRemoveIt(userToDelete);
+           if (answer){
+               Boolean hasDeleted = jpaUserDAO.delete(userToDelete);
+               if (hasDeleted) {
+                   userView.userHasBeenSuccesfullyRemoved();
+               } else {
+                   userView.errorWhenDeletingUser();
+               }
+           } else {
+               userView.editOrDeleteCancelled(Paginator.DELETE);
+           }
+        } else {
+            userView.editOrDeleteCancelled(Paginator.DELETE);
+        }
     }
 
     private UserDAO getUsertoEditOrDelete(String optionEditOrDelete) {
@@ -212,10 +235,16 @@ public class UserController {
                         shouldGetOut = true;
                         break;
                     default:
-                        if (choice.matches("^-?\\d+$")){
-                            int page = Integer.parseInt(choice);
-                            if (page > 0 && page <= totalPages) currentPage = page - 1;
-                        } else Keyboard.invalidData();
+                        if (optionSelectEditOrDelete != null){
+                            userIdSelected = Integer.parseInt(choice); //cuando se selecciona el id se captura automaticamente
+                            shouldGetOut = true; //se sale del while
+                        } else {
+                            if (choice.matches("^-?\\d+$")) { //se fija si se ingresó un número
+                                int page = Integer.parseInt(choice); //lo convierte en entero
+                                if (page > 0 && page <= totalPages)
+                                    currentPage = page - 1; //si mayor a 0 y menor al total, se le resta 1 para mostrar
+                            } else Keyboard.invalidData();
+                        }
 
 
                 }

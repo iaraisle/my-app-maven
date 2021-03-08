@@ -40,6 +40,7 @@ public class UserView {
         System.out.println("| 1 | Crear usuario");
         System.out.println("| 2 | Lista de usuarios");
         System.out.println("| 3 | Editar usuario");
+        System.out.println("| 4 | Eliminar usuario");
         System.out.println("| 5 | Regresar al menú principal");
         return Keyboard.getInputInteger();
     }
@@ -52,16 +53,16 @@ public class UserView {
         HashMap<String, String> data = new HashMap<>();
 
         System.out.println("Ingrese un nombre de usuario: ");
-        String nickname = Keyboard.getInputString();
+        String nickname = Keyboard.getInputAlphanumeric();
         data.put("nickname", nickname);
         //Mismo proceso en 1 paso:
-        // data.put("nickname", Keyboard.getInputString());
+        // data.put("nickname", Keyboard.getInputAlphanumeric());
 
 
         System.out.println("Ingrese un email: ");
-        String email = Keyboard.getInputString();
+        String email = Keyboard.getInputEmail();
         data.put("email", email);
-        //data.put("email", Keyboard.getInputString());
+        //data.put("email", Keyboard.getInputEmail());
 
         return data;
     }
@@ -103,8 +104,8 @@ public class UserView {
 
         st.print();
 
-        if (optionSelectEditOrDelete != null && !optionSelectEditOrDelete.isEmpty())
-            paginator.set(paginator.size() - 2, optionSelectEditOrDelete);
+        //if (optionSelectEditOrDelete != null && !optionSelectEditOrDelete.isEmpty())
+        //   paginator.set(paginator.size() - 2, optionSelectEditOrDelete);
 
         System.out.println("\n+----------------------------------------+");
         paginator.forEach(page -> System.out.print(page + " "));
@@ -164,5 +165,32 @@ public class UserView {
 
         Keyboard.pressEnterKeyToContinue();
 
+    }
+
+    public Boolean areYouSureToRemoveIt(UserDAO dao) {
+        System.out.println("\n¿Seguro que quiere eliminar el siguiente registro?");
+        System.out.printf("id: %d\n", dao.getId());
+        System.out.printf("email: %s\n", dao.getEmail());
+        System.out.printf("Nickname: %s\n", dao.getNickName());
+
+
+        System.out.println("| 1 | Si\n| 2 | No");
+
+        return Keyboard.getInputInteger() == 1; //se captura la respuesta y retorna booleano 1 true 2 false
+    }
+
+    public void userHasBeenSuccesfullyRemoved() {
+        System.out.println("\nSe ha eliminado el registro exitosamente!");
+    }
+
+    public void errorWhenDeletingUser() {
+        System.out.println("\nOops!! Ha ocurrido un error al eliminar el registro, intentelo de nuevo.");
+
+    }
+
+    public void editOrDeleteCancelled(String action){
+    action = Paginator.EDIT.equals(action) ? "Edicion" : "Eliminación";
+        System.out.println("Se ha cancelado la " + action + "de usuario\n");
+        Keyboard.pressEnterKeyToContinue();
     }
 }

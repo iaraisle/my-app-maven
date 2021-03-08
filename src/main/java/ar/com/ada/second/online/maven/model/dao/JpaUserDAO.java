@@ -1,5 +1,7 @@
 package ar.com.ada.second.online.maven.model.dao;
 
+import jdk.jfr.EventType;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -77,6 +79,24 @@ public class JpaUserDAO extends JPA implements DAO <UserDAO>{
         return Optional.ofNullable(userDAO);
     }
 
+    @Override
+    public Boolean delete(UserDAO dao) {
+        openConnection();
+
+        //Sincronización
+        UserDAO userToDelete = entityManager.merge(dao);
+        //borrado
+        executeInsideTransaction(entityManager1 -> entityManager.remove(userToDelete));
+        //entityManager.remove(userToDelete);
+
+        closeConnection();
+
+        Optional<UserDAO> verifyById = findById(dao.getId());
+
+
+        return !verifyById.isPresent();
+    }
+
     public List<UserDAO> findAll(Integer from, Integer limit) {
         openConnection();
 
@@ -86,6 +106,8 @@ public class JpaUserDAO extends JPA implements DAO <UserDAO>{
         List<UserDAO> list = query.getResultList();
 
         closeConnection();
+
+
 
         return list;
     }

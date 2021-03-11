@@ -8,12 +8,13 @@
     <persistence-unit name="my-persistence-unit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>ar.com.ada.second.online.maven.model.dao.UserDAO</class>
+        <class>ar.com.ada.second.online.maven.model.dao.PostDAO</class>
 
         <properties>
 
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:mysql://localhost:3306/TestDB?createDatabaseIfNotExist=TRUE&amp;useSSL=FALSE"/>
+                      value="jdbc:mysql://localhost:3306/BlogDB?createDatabaseIfNotExist=TRUE&amp;useSSL=FALSE"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="iara"/>
 
@@ -21,7 +22,7 @@
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL55Dialect"/>
 
         </properties>
     </persistence-unit>

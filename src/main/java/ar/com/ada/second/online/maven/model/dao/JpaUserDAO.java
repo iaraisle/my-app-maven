@@ -40,6 +40,21 @@ public class JpaUserDAO extends JPA implements DAO <UserDAO>{
             throw new Exception("Ya existe un usuario con ese Email y Nickname");
         }
     }
+    public UserDAO findByNickname(String nickname) {
+        openConnection();
+
+        TypedQuery<UserDAO> query = entityManager.createQuery(
+                "SELECT u FROM UserDAO AS u WHERE nickname=:nickname",
+                UserDAO.class
+        );
+        query.setParameter("nickname", nickname);
+
+        Optional<UserDAO> byNickname = query.getResultList().stream().findFirst();
+
+        closeConnection();
+
+        return byNickname.orElse(null);
+    }
 
     @Override
     public void save(UserDAO userDAO) {
@@ -96,19 +111,16 @@ public class JpaUserDAO extends JPA implements DAO <UserDAO>{
 
         return !verifyById.isPresent();
     }
-
+    @Override
     public List<UserDAO> findAll(Integer from, Integer limit) {
         openConnection();
 
-        TypedQuery<UserDAO> query = entityManager.createQuery("SELECT COUNT u FROM UserDAO u", UserDAO.class);
+        TypedQuery<UserDAO> query = entityManager.createQuery("SELECT u FROM UserDAO u", UserDAO.class);
         query.setFirstResult(from);
         query.setMaxResults(limit);
         List<UserDAO> list = query.getResultList();
 
         closeConnection();
-
-
-
         return list;
     }
 }

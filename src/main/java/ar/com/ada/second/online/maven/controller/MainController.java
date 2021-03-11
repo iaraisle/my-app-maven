@@ -7,6 +7,7 @@ public class MainController {
     private static MainController mainController;
     private MainView mainView = MainView.getInstance();
     private UserController userController = UserController.getInstance();
+    private PostController postController = PostController.getInstance();
 
 
     private MainController() {
@@ -28,6 +29,9 @@ public class MainController {
                     // llamaria al controllador de usuario
                     userController.init();
                     break;
+                case 2:
+                // llamaria al controllador de post
+                    postController.init();
                 case 5:
                     shouldItStay = false;
                     break;

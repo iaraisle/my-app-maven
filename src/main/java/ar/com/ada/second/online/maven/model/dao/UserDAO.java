@@ -4,6 +4,8 @@ import ar.com.ada.second.online.maven.model.dto.UserDTO;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,7 +14,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "user")
-public class UserDAO {
+public class UserDAO implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -22,6 +24,9 @@ public class UserDAO {
 
     @Column(name= "email", length = 50, nullable = false, unique = true)
     private  String email;
+
+    @OneToMany(mappedBy = "user")
+    private List<PostDAO> posts;
 
     public UserDAO(String nickName, String email) {
         this.nickName = nickName;

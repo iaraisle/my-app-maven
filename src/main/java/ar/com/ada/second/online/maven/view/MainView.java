@@ -33,6 +33,7 @@ public class MainView {
     public Integer mainMenuSelectOption() {
         System.out.println("Seleccione un modulo con el que desea trabajar: ");
         System.out.println("| 1 | Usuarios");
+        System.out.println("| 2 | Posteos");
         System.out.println("| 5 | Finalizar app");
         return Keyboard.getInputInteger();
     }

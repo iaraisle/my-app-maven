@@ -14,7 +14,7 @@
 
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:mysql://localhost:3306/BlogDB?createDatabaseIfNotExist=TRUE&amp;useSSL=FALSE"/>
+                      value="jdbc:mysql://localhost:3306/BlogDB?createDatabaseIfNotExist=TRUE&amp;allowPublicKeyRetrieval=true&amp;useSSL=FALSE&amp;serverTimezone=UTC"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="iara"/>
 

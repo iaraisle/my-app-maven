@@ -1,13 +1,11 @@
 package ar.com.ada.second.online.maven.view;
 
-import ar.com.ada.second.online.maven.controller.UserController;
 import ar.com.ada.second.online.maven.model.dao.UserDAO;
 import ar.com.ada.second.online.maven.model.dto.UserDTO;
 import ar.com.ada.second.online.maven.utils.CommandLineTable;
 import ar.com.ada.second.online.maven.utils.Keyboard;
 import ar.com.ada.second.online.maven.utils.Paginator;
 
-import java.security.Key;
 import java.util.HashMap;
 import java.util.List;
 
@@ -97,7 +95,7 @@ public class UserView {
         users.forEach(userDAO -> {
             st.addRow(
                     userDAO.getId().toString(), //commandLineTable siempre va a mostrar string
-                    userDAO.getNickName(),
+                    userDAO.getNickname(),
                     userDAO.getEmail()
             );
         });
@@ -147,7 +145,7 @@ public class UserView {
 
         HashMap<String, String> data = new HashMap<>();
 
-        System.out.printf("Ingrese el nuevo Nickname (%s): ", dao.getNickName());
+        System.out.printf("Ingrese el nuevo Nickname (%s): ", dao.getNickname());
         data.put("nickname", Keyboard.getInputString());
 
 
@@ -171,7 +169,7 @@ public class UserView {
         System.out.println("\n¿Seguro que quiere eliminar el siguiente registro?");
         System.out.printf("id: %d\n", dao.getId());
         System.out.printf("email: %s\n", dao.getEmail());
-        System.out.printf("Nickname: %s\n", dao.getNickName());
+        System.out.printf("Nickname: %s\n", dao.getNickname());
 
 
         System.out.println("| 1 | Si\n| 2 | No");

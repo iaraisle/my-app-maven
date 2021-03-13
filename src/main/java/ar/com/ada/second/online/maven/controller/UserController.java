@@ -8,7 +8,6 @@ import ar.com.ada.second.online.maven.utils.Paginator;
 import ar.com.ada.second.online.maven.view.MainView;
 import ar.com.ada.second.online.maven.view.UserView;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -67,11 +66,11 @@ public class UserController {
         // pongo el cursor al principio, pongo Ctrl + Alt + V y elijo la variable
         // de qué parte del método quiero poner
 
-        String nickname = dataNewUser.get("nickname"); //para extraer la info del hashmap
+        /*String nickname = dataNewUser.get("nickname"); //para extraer la info del hashmap
         String email = dataNewUser.get("email");
-        UserDTO userDTO = new UserDTO(nickname, email);
+        UserDTO userDTO = new UserDTO(nickname, email);*/
 
-        /*2da versión
+        /*2da versión*/
         String nickname = dataNewUser.get("nickname");
         String email = dataNewUser.get("email");
 
@@ -79,7 +78,7 @@ public class UserController {
         userDTO.setNickName(nickname);
         userDTO.setEmail(email);
 
-        3ra versión
+        /*3ra versión
         UserDTO userDTO = new UserDTO();
         userDTO.setNickName(dataNewUser.get("nickname"));
         userDTO.setEmail(dataNewUser.get("email"));
@@ -124,7 +123,7 @@ public class UserController {
            HashMap<String, String> dataEditUser = userView.getDataEditUser(userToEdit);
 
            if (!dataEditUser.get("nickname").isEmpty())
-               userToEdit.setNickName(dataEditUser.get("nickname"));
+               userToEdit.setNickname(dataEditUser.get("nickname"));
 
            if (!dataEditUser.get("email").isEmpty())
                userToEdit.setEmail(dataEditUser.get("email"));

@@ -85,7 +85,7 @@ public class PostView {
             st.addRow(
                     postDAO.getId().toString(),
                     postDAO.getBody(),
-                    postDAO.getUser().getNickName()
+                    postDAO.getUser().getNickname()
             );
         });
         st.print();
@@ -160,7 +160,7 @@ public class PostView {
         System.out.println("\n¿Seguro que desea eleminar el siguiente registro?");
         System.out.printf("ID: %d", postToDelete.getId());
         System.out.printf("\nContenido: %s", postToDelete.getBody());
-        System.out.printf("\nAutor: %s\n", postToDelete.getUser().getNickName());
+        System.out.printf("\nAutor: %s\n", postToDelete.getUser().getNickname());
 
         System.out.println("| 1 | Si\n| 2 | No");
 

@@ -20,7 +20,7 @@ public class UserDAO implements Serializable {
     private Integer id;
 
     @Column(name= "nickname", length = 30, nullable = false, unique = true)
-    private String nickName;
+    private String nickname;
 
     @Column(name= "email", length = 50, nullable = false, unique = true)
     private  String email;
@@ -28,8 +28,8 @@ public class UserDAO implements Serializable {
     @OneToMany(mappedBy = "user")
     private List<PostDAO> posts;
 
-    public UserDAO(String nickName, String email) {
-        this.nickName = nickName;
+    public UserDAO(String nickname, String email) {
+        this.nickname = nickname;
         this.email = email;
     }
 
@@ -57,7 +57,7 @@ public class UserDAO implements Serializable {
     }
 
     public static UserDTO toDTO(UserDAO dao) {
-        UserDTO dto = new UserDTO(dao.getNickName(), dao.getEmail());
+        UserDTO dto = new UserDTO(dao.getNickname(), dao.getEmail());
         if (dao.getId() != null)
             dto.setId(dao.getId());
         return dto;

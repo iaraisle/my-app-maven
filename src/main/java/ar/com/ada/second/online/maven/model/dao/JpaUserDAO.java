@@ -75,7 +75,7 @@ public class JpaUserDAO extends JPA implements DAO <UserDAO>{
     public Integer getTotalRecords() {
         openConnection();
 
-        Object singleResult = entityManager.createNativeQuery("SELECT COUNT (*) FROM User").getSingleResult();//"native" permite usar la query de MySql
+        Object singleResult = entityManager.createNativeQuery("SELECT COUNT(*) FROM User").getSingleResult();//"native" permite usar la query de MySql
         Integer count = singleResult != null ? Integer.parseInt(singleResult.toString()) : 0;
 
         closeConnection();
